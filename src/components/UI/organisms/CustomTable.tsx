@@ -14,6 +14,8 @@ import Paper from "@mui/material/Paper";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useRouter } from "next/navigation";
 
 /* TableBody > TableRow */
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -88,6 +90,7 @@ export default function CustomTable({ rows, headCells }: CustomTableProps) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const router = useRouter();
 
   function EnhancedTableHead(props: EnhancedTableProps) {
     const { order, orderBy, onRequestSort } = props;
@@ -148,7 +151,12 @@ export default function CustomTable({ rows, headCells }: CustomTableProps) {
   };
 
   /* TableBody > TableRow */
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
+  const handleClick = (
+    event: React.MouseEvent<unknown>,
+    id: number,
+    router: AppRouterInstance
+  ) => {
+    router.push(`/products/edit/${id}`);
     const selectedIndex = selected.indexOf(id);
     let newSelected: readonly number[] = [];
 
@@ -225,7 +233,7 @@ export default function CustomTable({ rows, headCells }: CustomTableProps) {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
+                    onClick={(event) => handleClick(event, row.id, router)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
