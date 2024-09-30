@@ -65,7 +65,7 @@ const Orders = () => {
   return (
     <Layout>
       <Box> Lista de Produtos </Box>
-      <CustomTable rows={rows} headCells={headCells} />
+      <CustomTable rows={rows} headCells={headCells} editPath={'/orders/edit'} />
     </Layout>
   );
 };
