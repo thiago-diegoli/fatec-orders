@@ -1,11 +1,16 @@
 "use client";
 import Layout from "@/components/UI/organisms/Layout";
+import { env } from "@/config/env";
 import { IProduct } from "@/interfaces/IProduct";
 import { ProductEditValidator } from "@/validators/ProductEditValidator";
 import { TextField, Select, MenuItem, Button, Box } from "@mui/material";
+import axios from "axios";
 import { useFormik } from "formik";
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 const EditTemplate: React.FC = () => {
+  const { slug } = useParams();
   const formik = useFormik<IProduct>({
     initialValues: {
       brand: "",
@@ -20,7 +25,25 @@ const EditTemplate: React.FC = () => {
     },
   });
   const { handleSubmit, handleChange, values, setFieldValue, errors } = formik;
-  //<div>{params.slug}</div>;
+  
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get<IProduct>(`${env.apiBaseUrl}/produto/${slug}`);
+        const product = response.data;
+    
+        setFieldValue("brand", product.brand || "");
+        setFieldValue("description", product.description || "");
+        setFieldValue("flavor", product.flavor || "");
+        setFieldValue("value", product.value || 0);
+        setFieldValue("weight", product.weight || 0);
+      } catch (error) {
+        console.error("Erro ao buscar o produto:", error);
+      }
+    };
+    fetchProduct();
+  }, [slug]);
+  
   return (
     <Layout>
       <Box component="form" onSubmit={handleSubmit}>
