@@ -4,8 +4,13 @@ import { IOrder } from "@/interfaces/IOrder";
 import { OrderEditValidator } from "@/validators/OrderEditValidator";
 import { TextField, Select, MenuItem, Button, Box } from "@mui/material";
 import { useFormik } from "formik";
+import { useEffect } from "react";
 
-const EditOrderTemplate: React.FC = () => {
+interface EditTemplateProps {
+  order?: IOrder;
+}
+
+const EditOrderTemplate: React.FC<EditTemplateProps> = ({ order }) => {
   const formik = useFormik<IOrder>({
     initialValues: {
       date: "",
@@ -14,14 +19,21 @@ const EditOrderTemplate: React.FC = () => {
       itemsQuantity: 0,
       totalValue: 0,
     },
+
     validationSchema: OrderEditValidator,
     onSubmit: (values) => {
       console.log(values);
     },
   });
   
-  const { handleSubmit, handleChange, values, setFieldValue, errors } = formik;
+  const { handleSubmit, handleChange, values, setFieldValue, errors, setValues } = formik;
 
+  useEffect(() => {
+    if(!order) return;
+
+    const {id, ...ord} = order;
+    setValues(ord);
+  }, [order, setValues]);
   return (
     <Layout>
       <Box component="form" onSubmit={handleSubmit}>
