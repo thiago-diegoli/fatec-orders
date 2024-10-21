@@ -55,8 +55,12 @@ const Orders: React.FC<OrderProps> = ({ data }) => {
 
   return (
     <Layout>
-      <Box> Lista de Pedidos </Box>
-      <CustomTable rows={rows} headCells={headCells} editPath={'/orders/edit'} />
+      <Box data-testid="orderList"> Lista de Produtos </Box>
+      <CustomTable
+        rows={rows}
+        headCells={headCells}
+        editPath="/orders/edit"
+      />
     </Layout>
   );
 };

@@ -152,11 +152,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             path="/products"
             icon={<InboxIcon />}
           />
-          <CustomListItem
-            text="Pedidos"
-            path="/orders"
-            icon={<InboxIcon />}
-          />
+          <CustomListItem text="Pedidos" path="/orders" icon={<InboxIcon />} />
           <CustomListItem text="Sair" path="/" icon={<InboxIcon />} />
         </List>
         <Divider />
